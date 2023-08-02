@@ -1,7 +1,6 @@
-import logo from './logo.svg';
 import './index.css';
 import ContactsComponent from "./ContactsComponent";
-import {Button, Container, Navbar} from "react-bootstrap";
+import { Container, Navbar} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {

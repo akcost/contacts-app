@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import ContactForm from './ContactForm';
 import { Col, Row } from 'react-bootstrap';
+
+import { fetchContacts, deleteContact } from './contactService';
 
 const ContactsComponent = () => {
     const [contacts, setContacts] = useState([]);
@@ -13,8 +16,7 @@ const ContactsComponent = () => {
     });
 
     useEffect(() => {
-        fetch('http://localhost:8080/api/contacts')
-            .then((response) => response.json())
+        fetchContacts()
             .then((data) => {
                 // Sort the contacts by first name before saving to state
                 const sortedData = data.sort((a, b) => a.firstName.localeCompare(b.firstName));
@@ -22,6 +24,14 @@ const ContactsComponent = () => {
             })
             .catch((error) => console.error('Error:', error));
     }, []);
+
+    const handleDeleteContact = (id) => {
+        deleteContact(id)
+            .then(() => {
+                setContacts((prevContacts) => prevContacts.filter((contact) => contact.id !== id));
+            })
+            .catch((error) => console.error('Error:', error));
+    };
 
     const handleSortChange = (event) => {
         const selectedSortCriteria = event.target.value;
@@ -59,7 +69,11 @@ const ContactsComponent = () => {
 
     return (
         <div>
-
+            <h2>Create a New Contact</h2>
+            <br />
+            <div className="mx-auto w-75">
+                <ContactForm />
+            </div>
             <h1 className="font-bold">Contacts:</h1>
             <Row>
                 <Col sm={3} className="font-bold hover: cursor-pointer select-none" onClick={() => handleSortChange({ target: { value: 'firstName' } })}>
