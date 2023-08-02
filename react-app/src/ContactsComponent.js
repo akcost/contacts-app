@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import ContactForm from './ContactForm';
-import {Button, Col, Row} from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { fetchContacts, deleteContact } from './contactService';
 
-import {fetchContacts, deleteContact} from './contactService';
-
-const ContactsComponent = () => {
+const ContactsComponent = ({ contactsNumber }) => {
     const [contacts, setContacts] = useState([]);
     const [sortCriteria, setSortCriteria] = useState('name');
     const [sortOrder, setSortOrder] = useState('asc');
@@ -42,7 +40,7 @@ const ContactsComponent = () => {
         const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
 
         setSortOrder(newSortOrder);
-        setSortOrders({...sortOrders, [selectedSortCriteria]: newSortOrder});
+        setSortOrders({ ...sortOrders, [selectedSortCriteria]: newSortOrder });
         sortContacts(selectedSortCriteria, newSortOrder);
     };
 
@@ -67,46 +65,40 @@ const ContactsComponent = () => {
         return '';
     };
 
+    // Determine the number of contacts to display based on the contactsNumber prop
+    const numberOfContactsToShow = contactsNumber ? contactsNumber : contacts.length;
+
     return (
         <div>
-            <h2>Create a New Contact</h2>
-            <br/>
-            <div className="mx-auto w-75">
-                <ContactForm/>
-            </div>
-            <h1 className="font-bold">Contacts:</h1>
+            <h1 className="font-bold">Contacts</h1>
+            <br />
             <Row>
-                <Col sm={2} className="font-bold hover: cursor-pointer select-none"
-                     onClick={() => handleSortChange({target: {value: 'firstName'}})}>
+                <Col sm={2} className="font-bold hover: cursor-pointer select-none" onClick={() => handleSortChange({ target: { value: 'firstName' } })}>
                     First name {getSortSymbol('firstName')}
                 </Col>
-                <Col sm={2} className="font-bold hover: cursor-pointer select-none"
-                     onClick={() => handleSortChange({target: {value: 'lastName'}})}>
+                <Col sm={2} className="font-bold hover: cursor-pointer select-none" onClick={() => handleSortChange({ target: { value: 'lastName' } })}>
                     Last name {getSortSymbol('lastName')}
                 </Col>
-                <Col sm={2} className="font-bold hover: cursor-pointer select-none"
-                     onClick={() => handleSortChange({target: {value: 'codeName'}})}>
+                <Col sm={2} className="font-bold hover: cursor-pointer select-none" onClick={() => handleSortChange({ target: { value: 'codeName' } })}>
                     Code name {getSortSymbol('codeName')}
                 </Col>
-                <Col sm={3} className="font-bold hover: cursor-pointer select-none"
-                     onClick={() => handleSortChange({target: {value: 'phone'}})}>
+                <Col sm={3} className="font-bold hover: cursor-pointer select-none" onClick={() => handleSortChange({ target: { value: 'phone' } })}>
                     Phone number {getSortSymbol('phone')}
                 </Col>
-                <Col sm={3}>
-
-                </Col>
-
+                <Col sm={3}></Col>
             </Row>
 
-            {contacts.map((contact) => (
+            {contacts.slice(0, numberOfContactsToShow).map((contact) => (
                 <Row key={contact.id}>
                     <Col sm={2}> {contact.firstName}</Col>
                     <Col sm={2}> {contact.lastName}</Col>
                     <Col sm={2}> {contact.codeName}</Col>
                     <Col sm={3}> {contact.phone}</Col>
-                    <Col sm={3}> <a className="no-underline text-red-600 font-bold" href="" onClick={() => handleDeleteContact(contact.id)}>
-                        DELETE
-                    </a></Col>
+                    <Col sm={3} className="text-end">
+                        <a className="no-underline text-red-600 font-bold" href="" onClick={() => handleDeleteContact(contact.id)}>
+                            DELETE
+                        </a>
+                    </Col>
                 </Row>
             ))}
         </div>
