@@ -22,22 +22,22 @@ public class Contact {
 
     @NonNull
     @Column(name = "first_name")
-    @Size(min = 2)
+    @Size(min = 2, max = 50)
     private String firstName;
 
     @NonNull
     @Column(name = "last_name")
-    @Size(min = 2)
+    @Size(min = 2, max = 50)
     private String lastName;
 
     @NonNull
     @Column(name = "code_name")
-    @Size(min = 2)
+    @Size(min = 2, max = 100)
     private String codeName;
 
     @NonNull
     @Column(name = "phone")
-    @Size(min = 2)
+    @Size(min = 2, max = 30)
     private String phone;
 
 }
