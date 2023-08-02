@@ -7,6 +7,7 @@ function ContactsPage() {
     return (
         <div>
             <MyNavbar/>
+            <br/>
             <div className="mx-auto w-50">
                 <ContactsComponent/>
             </div>
