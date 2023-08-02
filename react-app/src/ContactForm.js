@@ -21,13 +21,15 @@ const ContactForm = () => {
 
         addContact(newContact)
             .then((data) => {
-                console.log('Contact added successfully:', data);
-                // Reset the form fields after successful submission
-                setFirstName('');
-                setLastName('');
-                setCodeName('');
-                setPhone('');
-            })
+                    console.log('Contact added successfully:', data);
+                    // Reset the form fields after successful submission
+                    setFirstName('');
+                    setLastName('');
+                    setCodeName('');
+                    setPhone('');
+                    window.location.reload();
+                }
+            )
             .catch((error) => console.error('Error:', error));
     };
 
