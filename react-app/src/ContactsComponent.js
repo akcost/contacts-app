@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import { fetchContacts, deleteContact } from './contactService';
 
 const ContactsComponent = ({ contactsNumber }) => {
@@ -12,6 +12,8 @@ const ContactsComponent = ({ contactsNumber }) => {
         codeName: 'asc',
         phone: 'asc',
     });
+
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetchContacts()
@@ -44,6 +46,11 @@ const ContactsComponent = ({ contactsNumber }) => {
         sortContacts(selectedSortCriteria, newSortOrder);
     };
 
+    const handleSearchChange = (event) => {
+        const { value } = event.target;
+        setSearchTerm(value);
+    };
+
     const sortContacts = (criteria, order) => {
         const sortedContacts = [...contacts];
 
@@ -68,10 +75,31 @@ const ContactsComponent = ({ contactsNumber }) => {
     // Determine the number of contacts to display based on the contactsNumber prop
     const numberOfContactsToShow = contactsNumber ? contactsNumber : contacts.length;
 
+    // Filter contacts based on the search term
+    const filteredContacts = contacts.filter(
+        (contact) =>
+            contact.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            contact.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            contact.codeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            contact.phone.includes(searchTerm)
+    );
+
     return (
         <div>
             <h1 className="font-bold">Contacts</h1>
             <br />
+            <Row>
+                <Col sm={12}>
+                    <Form.Group controlId="search" className="mb-3">
+                        <Form.Control
+                            type="text"
+                            placeholder="Search contacts"
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
             <Row>
                 <Col sm={2} className="font-bold hover: cursor-pointer select-none" onClick={() => handleSortChange({ target: { value: 'firstName' } })}>
                     First name {getSortSymbol('firstName')}
@@ -88,7 +116,7 @@ const ContactsComponent = ({ contactsNumber }) => {
                 <Col sm={3}></Col>
             </Row>
 
-            {contacts.slice(0, numberOfContactsToShow).map((contact) => (
+            {filteredContacts.slice(0, numberOfContactsToShow).map((contact) => (
                 <Row key={contact.id}>
                     <Col sm={2}> {contact.firstName}</Col>
                     <Col sm={2}> {contact.lastName}</Col>
