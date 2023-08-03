@@ -9,7 +9,9 @@ An app where you can view, create, delete and search contacts.
 
 ### Frontend Setup
 
-Navigate to `react-app` folder and run `npm start`.
+1) Navigate to `react-app` folder .
+2) Run `npm install`.
+3) Run `npm start`.
 
 ### HTTP Methods
 

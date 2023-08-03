@@ -46,7 +46,8 @@ public class Config implements WebMvcConfigurer {
             @Qualifier("dialect") String  dialect) {
 
         var populator = new ResourceDatabasePopulator(
-                new ClassPathResource("schema.sql")
+                new ClassPathResource("schema.sql"),
+                new ClassPathResource("data.sql")
         );
 
         DatabasePopulatorUtils.execute(populator, dataSource);
